@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>dogfood</groupId>
+  <artifactId>dogfood</artifactId>
+  <version>1.0</version>
+
+  <dependencies>
+    <dependency>
+      <groupId>eu.stratosphere</groupId>
+      <artifactId>pact-common</artifactId>
+      <version>0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>eu.stratosphere</groupId>
+      <artifactId>pact-runtime</artifactId>
+      <version>0.2</version>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+
+          <execution>
+            <id>CreateTransitionMatrix</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+
+            <configuration>
+              <classifier>CreateTransitionMatrix</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.CreateTransitionMatrix</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/transitionmatrix/*.class</include>
+                <include>**/transitionmatrix/*$*.class</include>
+              </includes>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>RowPartitionedTransitionMatrix</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+
+            <configuration>
+              <classifier>RowPartitionedTransitionMatrix</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.RowPartitionedTransitionMatrix</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/transitionmatrix/*.class</include>
+                <include>**/transitionmatrix/*$*.class</include>
+              </includes>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>CreateTransitionMatrixWithDanglingVertices</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+
+            <configuration>
+              <classifier>CreateTransitionMatrixWithDanglingVertices</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.CreateTransitionMatrixWithDanglingVertices</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/transitionmatrix/*.class</include>
+                <include>**/transitionmatrix/*$*.class</include>
+              </includes>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>Uniquify</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+
+            <configuration>
+              <classifier>Uniquify</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.Uniquify</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/transitionmatrix/*.class</include>
+                <include>**/transitionmatrix/*$*.class</include>
+              </includes>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>EdgeListToAdjacencyList</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+
+            <configuration>
+              <classifier>EdgeListToAdjacencyList</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.EdgeListToAdjacencyList</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/transitionmatrix/*.class</include>
+                <include>**/transitionmatrix/*$*.class</include>
+              </includes>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>Symmetrify</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+
+            <configuration>
+              <classifier>Symmetrify</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.Symmetrify</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/transitionmatrix/*.class</include>
+                <include>**/transitionmatrix/*$*.class</include>
+              </includes>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>SymmetrifyEdgeList</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+
+            <configuration>
+              <classifier>SymmetrifyEdgeList</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.SymmetrifyEdgeList</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/transitionmatrix/*.class</include>
+                <include>**/transitionmatrix/*$*.class</include>
+              </includes>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>RemoveDanglingVertices</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+
+            <configuration>
+              <classifier>RemoveDanglingVertices</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.RemoveDanglingVertices</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/transitionmatrix/*.class</include>
+                <include>**/transitionmatrix/*$*.class</include>
+              </includes>
+            </configuration>
+          </execution>
+
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
