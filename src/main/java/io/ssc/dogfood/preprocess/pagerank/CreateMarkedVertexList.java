@@ -1,4 +1,4 @@
-package io.ssc.dogfood.transitionmatrix;
+package io.ssc.dogfood.preprocess.pagerank;
 
 import eu.stratosphere.nephele.configuration.Configuration;
 import eu.stratosphere.pact.common.contract.FileDataSink;
@@ -14,11 +14,15 @@ import eu.stratosphere.pact.common.stubs.MapStub;
 import eu.stratosphere.pact.common.stubs.ReduceStub;
 import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactLong;
+import eu.stratosphere.pact.common.type.base.PactString;
+import io.ssc.dogfood.preprocess.BooleanValue;
+import io.ssc.dogfood.preprocess.EdgeListInputFormat;
+import io.ssc.dogfood.preprocess.Positions;
 
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-public class Uniquify implements PlanAssembler {
+public class CreateMarkedVertexList implements PlanAssembler {
 
   public Plan getPlan(String... args) {
     int noSubTasks   = (args.length > 0 ? Integer.parseInt(args[0]) : 1);
@@ -33,43 +37,21 @@ public class Uniquify implements PlanAssembler {
 
     ReduceContract reducer = new ReduceContract.Builder(UniqueVertexIDReducer.class, PactLong.class,
         Positions.VERTEX_ID)
-        .input(edgeMap)
-        .build();
+      .name("UniqueVertexIDReducer")
+      .input(edgeMap)
+      .build();
 
-    FileDataSink out = new FileDataSink(RecordOutputFormat.class, output, reducer, "AdjacencyList");
+    FileDataSink out = new FileDataSink(RecordOutputFormat.class, output, reducer, "Output");
     RecordOutputFormat.configureRecordFormat(out)
         .recordDelimiter('\n')
         .fieldDelimiter(' ')
         .lenient(true)
-        .field(PactLong.class, Positions.VERTEX_ID);
+        .field(PactLong.class, Positions.VERTEX_ID)
+        .field(PactString.class, 2);
 
-    Plan plan = new Plan(out);
+    Plan plan = new Plan(out, "CreateMarkedVertexList");
     plan.setDefaultParallelism(noSubTasks);
     return plan;
-  }
-
-  public static class EdgeListInputFormat extends TextInputFormat {
-
-    private static final Pattern SEPARATOR = Pattern.compile("[\t, ]");
-
-    @Override
-    public boolean readRecord(PactRecord record, byte[] bytes, int offset, int numBytes) {
-      String str = new String(bytes, offset, numBytes).trim();
-      String[] parts = SEPARATOR.split(str);
-
-      if ("".equals(parts[0])) {
-        return false;
-      }
-
-      PactLong vertexId = new PactLong(Long.parseLong(parts[0]));
-      PactLong adjacentVertexId = new PactLong(Long.parseLong(parts[1]));
-
-      record.clear();
-      record.setField(Positions.VERTEX_ID, vertexId);
-      record.setField(Positions.ADJACENT_VERTEX_ID, adjacentVertexId);
-
-      return true;
-    }
   }
 
   public static class VertexIDMap extends MapStub {
@@ -84,8 +66,10 @@ public class Uniquify implements PlanAssembler {
     @Override
     public void map(PactRecord record, Collector<PactRecord> collector) throws Exception {
       result.setField(Positions.VERTEX_ID, record.getField(Positions.VERTEX_ID, PactLong.class));
+      result.setField(Positions.COULD_BE_DANGLING, new BooleanValue(false));
       collector.collect(result);
       result.setField(Positions.VERTEX_ID, record.getField(Positions.ADJACENT_VERTEX_ID, PactLong.class));
+      result.setField(Positions.COULD_BE_DANGLING, new BooleanValue(true));
       collector.collect(result);
     }
   }
@@ -109,6 +93,17 @@ public class Uniquify implements PlanAssembler {
 
       PactRecord first = records.next();
       result.setField(Positions.VERTEX_ID, first.getField(Positions.VERTEX_ID, PactLong.class));
+
+      boolean couldBeDangling = true;
+
+      couldBeDangling &= first.getField(Positions.COULD_BE_DANGLING, BooleanValue.class).get();
+
+      while (records.hasNext()) {
+        PactRecord record = records.next();
+        couldBeDangling &= record.getField(Positions.COULD_BE_DANGLING, BooleanValue.class).get();
+      }
+
+      result.setField(2, new PactString(couldBeDangling ? "1" : ""));
 
       collector.collect(result);
     }

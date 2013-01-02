@@ -19,6 +19,11 @@
       <artifactId>pact-runtime</artifactId>
       <version>0.2</version>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+    </dependency>
   </dependencies>
 
   <properties>
@@ -44,69 +49,6 @@
         <executions>
 
           <execution>
-            <id>CreateTransitionMatrix</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-
-            <configuration>
-              <classifier>CreateTransitionMatrix</classifier>
-              <archive>
-                <manifestEntries>
-                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.CreateTransitionMatrix</Pact-Assembler-Class>
-                </manifestEntries>
-              </archive>
-              <includes>
-                <include>**/transitionmatrix/*.class</include>
-                <include>**/transitionmatrix/*$*.class</include>
-              </includes>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>RowPartitionedTransitionMatrix</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-
-            <configuration>
-              <classifier>RowPartitionedTransitionMatrix</classifier>
-              <archive>
-                <manifestEntries>
-                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.RowPartitionedTransitionMatrix</Pact-Assembler-Class>
-                </manifestEntries>
-              </archive>
-              <includes>
-                <include>**/transitionmatrix/*.class</include>
-                <include>**/transitionmatrix/*$*.class</include>
-              </includes>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>CreateTransitionMatrixWithDanglingVertices</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-
-            <configuration>
-              <classifier>CreateTransitionMatrixWithDanglingVertices</classifier>
-              <archive>
-                <manifestEntries>
-                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.CreateTransitionMatrixWithDanglingVertices</Pact-Assembler-Class>
-                </manifestEntries>
-              </archive>
-              <includes>
-                <include>**/transitionmatrix/*.class</include>
-                <include>**/transitionmatrix/*$*.class</include>
-              </includes>
-            </configuration>
-          </execution>
-
-          <execution>
             <id>Uniquify</id>
             <phase>package</phase>
             <goals>
@@ -117,33 +59,12 @@
               <classifier>Uniquify</classifier>
               <archive>
                 <manifestEntries>
-                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.Uniquify</Pact-Assembler-Class>
+                  <Pact-Assembler-Class>io.ssc.dogfood.preprocess.Uniquify</Pact-Assembler-Class>
                 </manifestEntries>
               </archive>
               <includes>
-                <include>**/transitionmatrix/*.class</include>
-                <include>**/transitionmatrix/*$*.class</include>
-              </includes>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>EdgeListToAdjacencyList</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-
-            <configuration>
-              <classifier>EdgeListToAdjacencyList</classifier>
-              <archive>
-                <manifestEntries>
-                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.EdgeListToAdjacencyList</Pact-Assembler-Class>
-                </manifestEntries>
-              </archive>
-              <includes>
-                <include>**/transitionmatrix/*.class</include>
-                <include>**/transitionmatrix/*$*.class</include>
+                <include>**/preprocess/*.class</include>
+                <include>**/preprocess/*$*.class</include>
               </includes>
             </configuration>
           </execution>
@@ -159,59 +80,83 @@
               <classifier>Symmetrify</classifier>
               <archive>
                 <manifestEntries>
-                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.Symmetrify</Pact-Assembler-Class>
+                  <Pact-Assembler-Class>io.ssc.dogfood.preprocess.Symmetrify</Pact-Assembler-Class>
                 </manifestEntries>
               </archive>
               <includes>
-                <include>**/transitionmatrix/*.class</include>
-                <include>**/transitionmatrix/*$*.class</include>
+                <include>**/preprocess/*.class</include>
+                <include>**/preprocess/*$*.class</include>
               </includes>
             </configuration>
           </execution>
 
           <execution>
-            <id>SymmetrifyEdgeList</id>
+            <id>EdgeListToAdjacencyList</id>
             <phase>package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
 
             <configuration>
-              <classifier>SymmetrifyEdgeList</classifier>
+              <classifier>EdgeListToAdjacencyList</classifier>
               <archive>
                 <manifestEntries>
-                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.SymmetrifyEdgeList</Pact-Assembler-Class>
+                  <Pact-Assembler-Class>io.ssc.dogfood.preprocess.EdgeListToAdjacencyList</Pact-Assembler-Class>
                 </manifestEntries>
               </archive>
               <includes>
-                <include>**/transitionmatrix/*.class</include>
-                <include>**/transitionmatrix/*$*.class</include>
+                <include>**/preprocess/*.class</include>
+                <include>**/preprocess/*$*.class</include>
               </includes>
             </configuration>
           </execution>
 
           <execution>
-            <id>RemoveDanglingVertices</id>
+            <id>CreateMarkedVertexList</id>
             <phase>package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
 
             <configuration>
-              <classifier>RemoveDanglingVertices</classifier>
+              <classifier>CreateMarkedVertexList</classifier>
               <archive>
                 <manifestEntries>
-                  <Pact-Assembler-Class>io.ssc.dogfood.transitionmatrix.RemoveDanglingVertices</Pact-Assembler-Class>
+                  <Pact-Assembler-Class>io.ssc.dogfood.preprocess.pagerank.CreateMarkedVertexList</Pact-Assembler-Class>
                 </manifestEntries>
               </archive>
               <includes>
-                <include>**/transitionmatrix/*.class</include>
-                <include>**/transitionmatrix/*$*.class</include>
+                <include>**/preprocess/*.class</include>
+                <include>**/preprocess/*$*.class</include>
+                <include>**/preprocess/pagerank/*.class</include>
+                <include>**/preprocess/pagerank/*$*.class</include>
               </includes>
             </configuration>
           </execution>
 
-        </executions>
+          <execution>
+            <id>CluewebToEdgeList</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>CluewebToEdgeList</classifier>
+              <archive>
+                <manifestEntries>
+                  <Pact-Assembler-Class>io.ssc.dogfood.preprocess.pagerank.CluewebToEdgeList</Pact-Assembler-Class>
+                </manifestEntries>
+              </archive>
+              <includes>
+                <include>**/preprocess/*.class</include>
+                <include>**/preprocess/*$*.class</include>
+                <include>**/preprocess/pagerank/*.class</include>
+                <include>**/preprocess/pagerank/*$*.class</include>
+              </includes>
+            </configuration>
+        </execution>
+
+         </executions>
       </plugin>
 
     </plugins>

@@ -1,4 +1,4 @@
-package io.ssc.dogfood.transitionmatrix;
+package io.ssc.dogfood.preprocess;
 
 import eu.stratosphere.pact.common.type.Value;
 
